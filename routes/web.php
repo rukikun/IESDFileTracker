@@ -5,21 +5,17 @@ use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileTrackerController;
 
-// Redirect root to dashboard if authenticated, otherwise to login
-Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('dashboard');
-    }
-    return redirect()->route('login');
-})->name('landing');
+// Show landing page for guests, redirect authenticated users to dashboard
+Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 
 Route::get('/home', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Redirect dashboard to filetracker
+Route::get('/dashboard', function () {
+    return redirect()->route('filetracker.index');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 // File Tracker Routes (protected)
 Route::get('/filetracker', [FileTrackerController::class, 'index'])

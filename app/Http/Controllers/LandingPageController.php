@@ -9,9 +9,15 @@ class LandingPageController extends Controller
 {
     /**
      * Display the landing page with categories.
+     * Redirect authenticated users to dashboard.
      */
     public function index()
     {
+        // Redirect authenticated users to dashboard
+        if (auth()->check()) {
+            return redirect()->route('dashboard');
+        }
+        
         try {
             $categories = Category::withCount('documents')
                                  ->ordered()
