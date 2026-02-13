@@ -113,6 +113,10 @@
             background-color: #1a1a1a;
         }
         
+        .dark body {
+            background-color: #f0f0f0 !important;
+        }
+        
         .dark .glass-effect {
             background: rgba(40, 40, 40, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -138,6 +142,11 @@
         .dark .category-card.active {
             background: linear-gradient(90deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
             border-left-color: #6366f1;
+        }
+        
+        .category-card.active h4,
+        .category-card.active p {
+            color: #ffffff !important;
         }
         
         .dark .category-card h4,
@@ -222,6 +231,18 @@
         
         .dark .border-b {
             border-color: #4a5568 !important;
+        }
+        
+        .dark tbody tr:hover td,
+        .dark tbody tr:hover td .font-semibold,
+        .dark tbody tr:hover td .text-xs,
+        .dark tbody tr:hover td .text-gray-600,
+        .dark tbody tr:hover td .text-indigo-600,
+        .dark tbody tr:hover td .text-blue-600,
+        .dark tbody tr:hover td .text-red-600,
+        .dark tbody tr:hover td span,
+        .dark tbody tr:hover td a {
+            color: #000000 !important;
         }
         
         .dark .dropdown-menu {
