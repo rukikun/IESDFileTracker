@@ -16,7 +16,6 @@
         }
         .glass-effect {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
         .category-card {
@@ -41,13 +40,11 @@
         }
         .modal-backdrop {
             background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
         }
         
         /* Enhanced dropdown styles */
         .dropdown-menu {
             background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.05);
             animation: dropdownSlide 0.2s ease-out;
@@ -69,7 +66,6 @@
         .toast-notification {
             animation: fadeIn 0.3s ease-out;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-            backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
@@ -91,12 +87,11 @@
         
         /* Ensure dropdowns always appear on top */
         .relative .absolute {
-            z-index: 9999 !important;
+            z-index: 1000 !important;
         }
         
         /* Header enhancements */
         header {
-            backdrop-filter: blur(10px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
@@ -368,6 +363,118 @@
                 transform: scale(1);
             }
         }
+        
+        /* Highlight animation for newly added documents */
+        @keyframes highlightNew {
+            0% {
+                background-color: #fef3c7;
+                transform: scale(1.02);
+            }
+            50% {
+                background-color: #fde68a;
+                transform: scale(1.01);
+            }
+            100% {
+                background-color: transparent;
+                transform: scale(1);
+            }
+        }
+        
+        .new-document-highlight {
+            animation: highlightNew 2s ease-in-out;
+        }
+
+        /* Updated document highlight animation */
+        @keyframes highlightUpdated {
+            0% {
+                background-color: #dbeafe;
+                transform: scale(1.02);
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            }
+            25% {
+                background-color: #bfdbfe;
+                transform: scale(1.01);
+                box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+            }
+            50% {
+                background-color: #93c5fd;
+                transform: scale(1.005);
+                box-shadow: 0 8px 20px rgba(59, 130, 246, 0.5);
+            }
+            75% {
+                background-color: #dbeafe;
+                transform: scale(1.002);
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            }
+            100% {
+                background-color: transparent;
+                transform: scale(1);
+                box-shadow: none;
+            }
+        }
+        
+        .updated-document-highlight {
+            animation: highlightUpdated 2s ease-in-out;
+        }
+
+        /* Ensure notification dropdown appears above everything */
+        .notification-dropdown {
+            z-index: 999999999999999 !important;
+            position: fixed !important;
+            transform: translateZ(0) !important;
+        }
+
+        /* Custom scrollbar styling for notification dropdown */
+        #notificationDropdown .overflow-y-auto::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #notificationDropdown .overflow-y-auto::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #notificationDropdown .overflow-y-auto::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.8);
+            border-radius: 2px;
+        }
+
+        #notificationDropdown .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(156, 163, 175, 1);
+        }
+
+        .dark #notificationDropdown .overflow-y-auto::-webkit-scrollbar-thumb {
+            background-color: rgba(75, 85, 99, 0.8);
+        }
+
+        .dark #notificationDropdown .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(75, 85, 99, 1);
+        }
+
+        /* Custom scrollbar styling for main content area */
+        .main-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.8);
+            border-radius: 2px;
+        }
+
+        .main-content::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(156, 163, 175, 1);
+        }
+
+        .dark .main-content::-webkit-scrollbar-thumb {
+            background-color: rgba(75, 85, 99, 0.8);
+        }
+
+        .dark .main-content::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(75, 85, 99, 1);
+        }
     </style>
 </head>
 <body class="bg-gray-50" x-data="fileTracker()">
@@ -407,7 +514,7 @@
                     <h1 class="text-white text-3xl font-bold tracking-wider ml-2">IESD FILE TRACKER</h1>
                 </div>
 
-                <!-- Right section: Theme Toggle and Logout -->
+                <!-- Right section: Theme Toggle, Notifications, and Logout -->
                 <div class="flex items-center space-x-4">
                     <!-- Dark Mode Toggle -->
                     <button @click="toggleDarkMode()" 
@@ -415,6 +522,9 @@
                             title="Toggle Dark Mode">
                         <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'" class="text-xl"></i>
                     </button>
+
+                    <!-- Notifications -->
+                    @include('components.notification-dropdown')
 
                     <!-- Logout Button -->
                     <form method="POST" action="{{ route('logout') }}" class="inline">
@@ -434,7 +544,7 @@
         <!-- Enhanced Sidebar -->
         <aside class="sidebar w-80 sidebar-gradient shadow-2xl z-40"
                :class="{ 'collapsed': !sidebarOpen }"
-               style="overflow: auto;">
+               style="overflow: auto; height: 100%;">
             <div class="p-6 text-white">
                 <!-- Header -->
                 <div class="mb-8">
@@ -576,8 +686,8 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-1 p-6 main-content" :class="{ 'sidebar-collapsed': !sidebarOpen }">
-            <div class="glass-effect rounded-xl shadow-xl">
+        <main class="flex-1 flex flex-col p-6 main-content overflow-y-auto" :class="{ 'sidebar-collapsed': !sidebarOpen, 'bg-gray-100': !darkMode, 'bg-gray-900': darkMode }">
+            <div class="glass-effect rounded-xl shadow-xl flex-1 flex flex-col">
                 <!-- Filters Section -->
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex items-center justify-between mb-4">
@@ -596,7 +706,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
                             <select x-model="filters.category_id" 
-                                    @change="handleFilterChange"
+                                    @change="handleFilterChange($event)"
                                     :disabled="loading || filterLoading"
                                     :class="{ 'opacity-50 cursor-not-allowed': loading || filterLoading }"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -611,7 +721,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Year</label>
                             <select x-model="filters.year" 
-                                    @change="handleFilterChange"
+                                    @change="handleFilterChange($event)"
                                     :disabled="loading || filterLoading"
                                     :class="{ 'opacity-50 cursor-not-allowed': loading || filterLoading }"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -626,7 +736,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Month</label>
                             <select x-model="filters.month" 
-                                    @change="handleFilterChange"
+                                    @change="handleFilterChange($event)"
                                     :disabled="loading || filterLoading"
                                     :class="{ 'opacity-50 cursor-not-allowed': loading || filterLoading }"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -665,14 +775,57 @@
                     
                     <!-- Active Filters Display -->
                     <div x-show="hasActiveFilters()" class="mt-4 flex flex-wrap gap-2">
-                        <template x-for="(value, key) in getActiveFilters()" :key="key">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                <span x-text="getFilterLabel(key)"></span>: <span x-text="getFilterValue(key, value)" class="ml-1 font-semibold"></span>
-                                <button @click="removeFilter(key)" class="ml-2 hover:text-indigo-600">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </span>
-                        </template>
+                        <!-- Category Filter -->
+                        <div x-show="filters.category_id" 
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-90"
+                             class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                            <span>Category: <span x-text="getCategoryName(filters.category_id)"></span></span>
+                            <button @click="removeFilter('category_id')" 
+                                    class="ml-2 hover:text-indigo-600 transition-colors duration-150 hover:scale-110 transform">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Year Filter -->
+                        <div x-show="filters.year" 
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-90"
+                             class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                            <span>Year: <span x-text="filters.year"></span></span>
+                            <button @click="removeFilter('year')" 
+                                    class="ml-2 hover:text-indigo-600 transition-colors duration-150 hover:scale-110 transform">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Month Filter -->
+                        <div x-show="filters.month" 
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-90"
+                             class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                            <span>Month: <span x-text="getMonthName(filters.month)"></span></span>
+                            <button @click="removeFilter('month')" 
+                                    class="ml-2 hover:text-indigo-600 transition-colors duration-150 hover:scale-110 transform">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Search Filter -->
+                        <div x-show="filters.search" 
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-90"
+                             class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                            <span>Search: <span x-text="filters.search"></span></span>
+                            <button @click="removeFilter('search')" 
+                                    class="ml-2 hover:text-indigo-600 transition-colors duration-150 hover:scale-110 transform">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -680,9 +833,9 @@
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex justify-between items-center">
                         <div class="text-sm text-gray-600">
-                            Showing <span x-text="filteredDocuments.length" class="font-semibold"></span> 
+                            Showing <span x-text="startRecord" class="font-semibold"></span>-<span x-text="endRecord" class="font-semibold"></span> 
                             <span x-show="hasActiveFilters()">filtered</span> 
-                            of <span x-text="totalDocumentsCount" class="font-semibold"></span> documents
+                            of <span x-text="filteredDocuments.length" class="font-semibold"></span> documents
                         </div>
                         <button @click="showAddDocument = true" 
                                 class="btn-primary text-white px-6 py-3 rounded-lg font-semibold">
@@ -699,11 +852,11 @@
                             Documents
                         </h2>
                         <div class="text-sm text-gray-600">
-                            Showing <span x-text="filteredDocuments.length" class="font-semibold"></span> of <span x-text="documents.length" class="font-semibold"></span> documents
+                            Showing <span x-text="startRecord" class="font-semibold"></span>-<span x-text="endRecord" class="font-semibold"></span> of <span x-text="filteredDocuments.length" class="font-semibold"></span> documents
                         </div>
                     </div>
                     
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto transition-all duration-300 ease-in-out">
                         <table class="w-full">
                             <thead>
                                 <tr class="border-b border-gray-200 bg-gray-50">
@@ -718,9 +871,12 @@
                                     <th class="text-left py-3 px-4 font-semibold text-gray-700">Month</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <template x-for="document in filteredDocuments" :key="document.id">
-                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <tbody class="transition-opacity duration-300 ease-in-out"
+                           :class="{ 'opacity-50': loading }">
+                                <template x-for="document in paginatedDocuments" :key="document.id">
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50 transition-all duration-300"
+                                        :class="{ 'new-document-highlight': newDocumentId === document.id }"
+                                        :data-document-id="document.id">
                                         <td class="py-4 px-4">
                                             <div class="flex items-center">
                                                 <input type="checkbox" :value="document.id" x-model="selectedDocuments" class="mr-3 w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500">
@@ -767,6 +923,41 @@
                                 </template>
                             </tbody>
                         </table>
+                        
+                        <!-- Pagination Controls -->
+                        <div x-show="totalPages > 1" class="flex items-center justify-between mt-6 pt-4 border-t border-gray-200">
+                            <div class="text-sm text-gray-600">
+                                Page <span x-text="currentPage" class="font-semibold"></span> of <span x-text="totalPages" class="font-semibold"></span>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2">
+                                <!-- Previous Button -->
+                                <button @click="previousPage()" 
+                                        :disabled="currentPage === 1"
+                                        :class="{ 'opacity-50 cursor-not-allowed': currentPage === 1, 'hover:bg-gray-100 active:scale-95': currentPage > 1 }"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md transition-all duration-200 transform">
+                                    <i class="fas fa-chevron-left mr-1"></i>
+                                    Previous
+                                </button>
+                                
+                                <!-- Page Numbers -->
+                                <template x-for="page in Math.min(totalPages, 5)" :key="page">
+                                    <button @click="goToPage(page)" 
+                                            :class="{ 'bg-indigo-600 text-white border-indigo-600 active:scale-95': page === currentPage, 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 active:scale-95': page !== currentPage }"
+                                            class="px-3 py-2 text-sm font-medium border rounded-md transition-all duration-200 transform"
+                                            x-text="page"></button>
+                                </template>
+                                
+                                <!-- Next Button -->
+                                <button @click="nextPage()" 
+                                        :disabled="currentPage === totalPages"
+                                        :class="{ 'opacity-50 cursor-not-allowed': currentPage === totalPages, 'hover:bg-gray-100 active:scale-95': currentPage < totalPages }"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md transition-all duration-200 transform">
+                                    Next
+                                    <i class="fas fa-chevron-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
                         
                         <div x-show="filteredDocuments.length === 0" class="text-center py-12">
                             <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
@@ -839,11 +1030,13 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Month</label>
-                        <input type="text" 
-                               x-model="newDocument.document_month" 
-                               @input="newDocument.document_month_id = getMonthIdByName(newDocument.document_month)"
-                               placeholder="e.g., January or 1-12" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <select x-model="newDocument.document_month_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="">Select Month</option>
+                            @foreach($months as $month)
+                            <option value="{{ $month->id }}">{{ $month->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div>
@@ -995,11 +1188,13 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Month</label>
-                        <input type="text" 
-                               x-model="editingDocument.document_month" 
-                               @input="editingDocument.document_month_id = getMonthIdByName(editingDocument.document_month)"
-                               placeholder="e.g., January or 1-12" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <select x-model="editingDocument.document_month_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="">Select Month</option>
+                            @foreach($months as $month)
+                            <option value="{{ $month->id }}">{{ $month->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div>
@@ -1016,8 +1211,16 @@
                     Cancel
                 </button>
                 <button @click="updateDocument" 
+                        :disabled="editDocumentLoading"
+                        :class="{ 'opacity-50 cursor-not-allowed': editDocumentLoading }"
                         class="px-4 py-2 btn-primary text-white rounded-lg">
-                    <i class="fas fa-save mr-2"></i>Save Changes
+                    <template x-if="editDocumentLoading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                    </template>
+                    <template x-if="!editDocumentLoading">
+                        <i class="fas fa-save mr-2"></i>
+                    </template>
+                    <span x-text="editDocumentLoading ? 'Saving...' : 'Save Changes'"></span>
                 </button>
             </div>
         </div>
@@ -1082,6 +1285,7 @@
                 darkMode: localStorage.getItem('darkMode') === 'true', // Load from localStorage
                 loading: false, // Loading state for filters
                 addDocumentLoading: false, // Loading state for add document
+                editDocumentLoading: false, // Loading state for edit document
                 searchLoading: false, // Loading state for search
                 searchLoadingTimer: null, // Timer for search loading delay
                 filterLoading: false, // Loading state for category/year/month filters
@@ -1110,8 +1314,7 @@
                     document_name: '',
                     url: '',
                     document_year: '',
-                    document_month: '', // Store user input
-                    document_month_id: '' // Store converted ID
+                    document_month_id: ''
                 },
                 editingDocument: {
                     id: null,
@@ -1119,10 +1322,13 @@
                     document_name: '',
                     url: '',
                     document_year: '',
-                    document_month: '', // Store user input
-                    document_month_id: '' // Store converted ID
+                    document_month_id: ''
                 },
                 selectedDocuments: [],
+                currentPage: 1,
+                perPage: 10,
+                newDocumentId: null,
+                removingFilter: null, // Track which filter is being removed for animation
                 
                 get filteredDocuments() {
                     let filtered = this.documents;
@@ -1151,6 +1357,25 @@
                     return filtered;
                 },
                 
+                get paginatedDocuments() {
+                    const start = (this.currentPage - 1) * this.perPage;
+                    const end = start + this.perPage;
+                    return this.filteredDocuments.slice(start, end);
+                },
+                
+                get totalPages() {
+                    return Math.ceil(this.filteredDocuments.length / this.perPage);
+                },
+                
+                get startRecord() {
+                    return this.filteredDocuments.length === 0 ? 0 : (this.currentPage - 1) * this.perPage + 1;
+                },
+                
+                get endRecord() {
+                    const end = this.currentPage * this.perPage;
+                    return end > this.filteredDocuments.length ? this.filteredDocuments.length : end;
+                },
+                
                 get totalDocuments() {
                     return this.documents.length;
                 },
@@ -1161,6 +1386,37 @@
                 
                 selectCategory(categoryId) {
                     this.selectedCategory = categoryId;
+                    this.currentPage = 1; // Reset to first page when changing category
+                },
+                
+                goToPage(page) {
+                    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+                        this.loading = true;
+                        setTimeout(() => {
+                            this.currentPage = page;
+                            this.loading = false;
+                        }, 150);
+                    }
+                },
+                
+                previousPage() {
+                    if (this.currentPage > 1) {
+                        this.loading = true;
+                        setTimeout(() => {
+                            this.currentPage--;
+                            this.loading = false;
+                        }, 150);
+                    }
+                },
+                
+                nextPage() {
+                    if (this.currentPage < this.totalPages) {
+                        this.loading = true;
+                        setTimeout(() => {
+                            this.currentPage++;
+                            this.loading = false;
+                        }, 150);
+                    }
                 },
                 
                 get isAdminFilesSelected() {
@@ -1350,9 +1606,32 @@
                         }
                         
                         const newDoc = await response.json();
-                        this.documents.unshift(newDoc);
-                        this.allDocuments.unshift(newDoc);
+                        
+                        // Insert document in sorted position (by year descending, then month descending)
+                        const insertIndex = this.documents.findIndex(doc => 
+                            doc.document_year < newDoc.document_year || 
+                            (doc.document_year === newDoc.document_year && doc.document_month_id < newDoc.document_month_id)
+                        );
+                        
+                        if (insertIndex === -1) {
+                            // Insert at the end if no suitable position found
+                            this.documents.push(newDoc);
+                            this.allDocuments.push(newDoc);
+                        } else {
+                            // Insert at the correct position
+                            this.documents.splice(insertIndex, 0, newDoc);
+                            this.allDocuments.splice(insertIndex, 0, newDoc);
+                        }
+                        
                         this.totalDocumentsCount++;
+                        
+                        // Set the new document ID for highlighting
+                        this.newDocumentId = newDoc.id;
+                        
+                        // Clear the highlight after 3 seconds
+                        setTimeout(() => {
+                            this.newDocumentId = null;
+                        }, 3000);
                         
                         // Update category counts
                         const categoryIndex = this.categoriesWithDocuments.findIndex(c => c.id == category.id);
@@ -1378,8 +1657,7 @@
                         document_name: document.document_name,
                         url: document.url,
                         document_year: document.document_year || '',
-                        document_month_id: document.document_month_id || '',
-                        document_month: this.getMonthNameById(document.document_month_id) // Show month name for editing
+                        document_month_id: document.document_month_id || ''
                     };
                     this.showEditDocument = true;
                 },
@@ -1389,6 +1667,8 @@
                         this.showToast('Please fill in all required fields', 'error');
                         return;
                     }
+                    
+                    this.editDocumentLoading = true;
                     
                     try {
                         const response = await fetch(`/api/documents/${this.editingDocument.id}`, {
@@ -1414,15 +1694,56 @@
                         }
                         
                         const updatedDocument = await response.json();
-                        const index = this.documents.findIndex(doc => doc.id === updatedDocument.id);
-                        if (index !== -1) {
-                            this.documents[index] = updatedDocument;
+                        
+                        // Remove the old document from the array
+                        this.documents = this.documents.filter(doc => doc.id !== updatedDocument.id);
+                        
+                        // Insert the updated document in the correct sorted position (by year descending, then month descending)
+                        console.log('Repositioning document - Year:', updatedDocument.document_year, 'Month:', updatedDocument.document_month_id);
+                        
+                        const insertIndex = this.documents.findIndex(doc => {
+                            // Find first document that should come after the updated document
+                            // Documents are sorted by year descending, then month descending
+                            if (doc.document_year < updatedDocument.document_year) {
+                                // Current doc has lower year, so updated doc should come before it
+                                return true;
+                            }
+                            if (doc.document_year === updatedDocument.document_year && 
+                                doc.document_month_id < updatedDocument.document_month_id) {
+                                // Same year but lower month, so updated doc should come before it
+                                return true;
+                            }
+                            return false;
+                        });
+                        
+                        console.log('Insert index:', insertIndex);
+                        
+                        if (insertIndex === -1) {
+                            // No document found that should come after, so add to end (lowest year/month)
+                            this.documents.push(updatedDocument);
+                        } else {
+                            // Insert at the calculated position
+                            this.documents.splice(insertIndex, 0, updatedDocument);
                         }
+                        
+                        // Add highlight animation to repositioned document
+                        this.$nextTick(() => {
+                            const rowElement = document.querySelector(`[data-document-id="${updatedDocument.id}"]`);
+                            if (rowElement) {
+                                rowElement.classList.add('updated-document-highlight');
+                                setTimeout(() => {
+                                    rowElement.classList.remove('updated-document-highlight');
+                                }, 2000);
+                            }
+                        });
+                        
                         this.showEditDocument = false;
                         this.showToast('Document updated successfully', 'success');
                     } catch (error) {
                         console.error('Error updating document:', error);
                         this.showToast('Error updating document', 'error');
+                    } finally {
+                        this.editDocumentLoading = false;
                     }
                 },
                 
@@ -1481,8 +1802,7 @@
                         document_name: '',
                         url: '',
                         document_year: '',
-                        document_month: '', // Store user input
-                        document_month_id: '' // Store converted ID
+                        document_month_id: ''
                     };
                 },
                 
@@ -1565,7 +1885,15 @@
                 },
                 
                 // Filter methods
-                handleFilterChange() {
+                handleFilterChange(event) {
+                    console.log('Filter change triggered:', event?.target?.name, this.filters);
+                    
+                    // Prevent any default behavior that might cause page refresh
+                    if (event) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    
                     this.filterLoading = true;
                     this.applyFilters();
                 },
@@ -1607,6 +1935,8 @@
                 },
                 
                 async applyFilters() {
+                    console.log('Applying filters:', this.filters);
+                    
                     try {
                         const params = new URLSearchParams();
                         
@@ -1615,38 +1945,42 @@
                         if (this.filters.month) params.append('month', this.filters.month);
                         if (this.filters.search) params.append('search', this.filters.search);
                         
-                        const response = await fetch(`?${params.toString()}`, {
+                        // Use the correct route URL
+                        const response = await fetch('/filetracker?' + params.toString(), {
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest',
                                 'Accept': 'application/json'
                             }
                         });
                         
+                        console.log('Filter response status:', response.status);
+                        
                         if (response.ok) {
                             const data = await response.json();
+                            console.log('Filter data received:', data);
+                            
                             this.documents = data.documents;
-                            this.totalDocumentsCount = data.totalDocuments; // Update total count
+                            this.totalDocumentsCount = data.totalDocuments;
                             this.categoriesWithDocuments = data.categoriesWithDocuments;
                             this.uncategorizedDocuments = data.uncategorizedDocuments;
                             
                             // Update URL without page refresh
-                            const url = params.toString() ? `?${params.toString()}` : window.location.pathname;
+                            const url = '/filetracker?' + params.toString();
                             window.history.pushState({}, '', url);
+                            
+                            console.log('Filters applied successfully');
                         } else {
-                            // Fallback to page refresh if AJAX fails
-                            const url = params.toString() ? `?${params.toString()}` : window.location.pathname;
-                            window.location.href = url;
+                            console.error('Filter request failed with status:', response.status);
+                            const errorText = await response.text();
+                            console.error('Error response:', errorText);
+                            this.showToast('Error applying filters. Please try again.', 'error');
                         }
                     } catch (error) {
                         console.error('Filter error:', error);
-                        // Fallback to page refresh on error
-                        const params = new URLSearchParams();
-                        if (this.filters.category_id) params.append('category_id', this.filters.category_id);
-                        if (this.filters.year) params.append('year', this.filters.year);
-                        if (this.filters.month) params.append('month', this.filters.month);
-                        if (this.filters.search) params.append('search', this.filters.search);
-                        const url = params.toString() ? `?${params.toString()}` : window.location.pathname;
-                        window.location.href = url;
+                        this.showToast('Error applying filters. Please check your connection.', 'error');
+                        
+                        // Don't refresh the page - just show error and keep current state
+                        // This prevents unwanted page refreshes
                     } finally {
                         // Clear search loading timer and states
                         if (this.searchLoadingTimer) {
@@ -1660,18 +1994,39 @@
                 },
                 
                 clearFilters() {
-                    this.filters = {
-                        category_id: '',
-                        year: '',
-                        month: '',
-                        search: ''
-                    };
-                    this.applyFilters();
+                    // Set loading state for animation
+                    this.filterLoading = true;
+                    
+                    setTimeout(() => {
+                        this.filters = {
+                            category_id: '',
+                            year: '',
+                            month: '',
+                            search: ''
+                        };
+                        this.applyFilters();
+                    }, 200); // Brief delay for visual feedback
                 },
                 
-                removeFilter(filterKey) {
-                    this.filters[filterKey] = '';
-                    this.applyFilters();
+                removeFilter(key) {
+                    // Set loading state for animation
+                    this.filterLoading = true;
+                    this.removingFilter = key; // Set the filter being removed
+                    
+                    // Allow time for the leave animation to play
+                    setTimeout(() => {
+                        if (key === 'category_id') {
+                            this.filters.category_id = '';
+                        } else if (key === 'year') {
+                            this.filters.year = '';
+                        } else if (key === 'month') {
+                            this.filters.month = '';
+                        } else if (key === 'search') {
+                            this.filters.search = '';
+                        }
+                        this.removingFilter = null; // Reset after removal
+                        this.applyFilters();
+                    }, 200); // 200ms matches the transition duration
                 },
                 
                 hasActiveFilters() {
@@ -1696,14 +2051,21 @@
                 
                 getFilterValue(key, value) {
                     if (key === 'category_id') {
-                        const category = this.categories.find(c => c.id == value);
-                        return category ? category.category_name : value;
+                        return this.getCategoryName(value);
                     } else if (key === 'month') {
-                        const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 
-                                       'July', 'August', 'September', 'October', 'November', 'December'];
-                        return months[value] || value;
+                        return this.getMonthName(value);
                     }
                     return value;
+                },
+                
+                getCategoryName(categoryId) {
+                    const category = this.categories.find(cat => cat.id == categoryId);
+                    return category ? category.category_name : 'Unknown';
+                },
+                
+                getMonthName(monthId) {
+                    const month = this.months.find(m => m.id == monthId);
+                    return month ? month.name : 'Unknown';
                 },
                 
                 formatDocumentDate(dateString) {

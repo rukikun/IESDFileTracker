@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\Category;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentController extends Controller
 {
@@ -54,6 +56,23 @@ class DocumentController extends Controller
             'is_admin' => $request->is_admin ?? false
         ]);
 
+        // Create notification for document creation
+        if (Auth::check()) {
+            Notification::create([
+                'user_id' => Auth::id(),
+                'type' => 'data_edit',
+                'title' => 'Document Added',
+                'message' => "New document '{$document->document_name}' has been added to {$category->category_name}.",
+                'data' => [
+                    'document_id' => $document->id,
+                    'document_name' => $document->document_name,
+                    'category_name' => $category->category_name,
+                    'action' => 'created',
+                    'user_name' => Auth::user()->name
+                ],
+            ]);
+        }
+
         return response()->json($document->load('category', 'month'), 201);
     }
 
@@ -79,12 +98,50 @@ class DocumentController extends Controller
 
         $document->update($request->all());
 
+        // Create notification for document update
+        if (Auth::check()) {
+            $categoryName = $document->category->category_name ?? 'Unknown';
+            Notification::create([
+                'user_id' => Auth::id(),
+                'type' => 'data_edit',
+                'title' => 'Document Updated',
+                'message' => "Document '{$document->document_name}' has been updated in {$categoryName}.",
+                'data' => [
+                    'document_id' => $document->id,
+                    'document_name' => $document->document_name,
+                    'category_name' => $categoryName,
+                    'action' => 'updated',
+                    'user_name' => Auth::user()->name
+                ],
+            ]);
+        }
+
         return response()->json($document->load('category', 'month'));
     }
 
     public function destroy(Document $document)
     {
+        $documentName = $document->document_name;
+        $categoryName = $document->category->category_name ?? 'Unknown';
+        
         $document->delete();
+        
+        // Create notification for document deletion
+        if (Auth::check()) {
+            Notification::create([
+                'user_id' => Auth::id(),
+                'type' => 'data_edit',
+                'title' => 'Document Deleted',
+                'message' => "Document '{$documentName}' has been deleted from {$categoryName}.",
+                'data' => [
+                    'document_name' => $documentName,
+                    'category_name' => $categoryName,
+                    'action' => 'deleted',
+                    'user_name' => Auth::user()->name
+                ],
+            ]);
+        }
+        
         return response()->json(null, 204);
     }
 }

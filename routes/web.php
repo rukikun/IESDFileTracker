@@ -1,16 +1,14 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\NotificationDataController;
+use App\Http\Controllers\NotificationViewController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileTrackerController;
 
 // Show landing page for guests, redirect authenticated users to dashboard
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
-
-Route::get('/home', function () {
-    return view('welcome');
-})->name('home');
 
 // Redirect dashboard to filetracker
 Route::get('/dashboard', function () {
@@ -23,9 +21,14 @@ Route::get('/filetracker', [FileTrackerController::class, 'index'])
     ->name('filetracker.index');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Notification Routes
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+    Route::patch('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+    Route::get('/notifications/data', [NotificationDataController::class, 'getNotifications'])->name('notifications.data');
+    Route::get('/notifications/view', [NotificationViewController::class, 'showNotifications'])->name('notifications.view');
 });
 
 require __DIR__.'/auth.php';

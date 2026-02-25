@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Document;
 use App\Models\Month;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class FileTrackerController extends Controller
@@ -105,7 +106,9 @@ class FileTrackerController extends Controller
             'uncategorizedDocuments' => $uncategorizedDocuments,
             'availableYears' => $availableYears,
             'months' => $months,
-            'filters' => $filters
+            'filters' => $filters,
+            'notifications' => Notification::where('user_id', auth()->id())->orderBy('created_at', 'desc')->limit(10)->get(),
+            'unreadCount' => Notification::where('user_id', auth()->id())->where('is_read', false)->count()
         ]);
     }
 }
