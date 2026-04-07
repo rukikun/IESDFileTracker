@@ -429,7 +429,6 @@
                 <!-- Navigation -->
                 <div class="space-y-2 mb-6">
                     <a href="{{ route('dashboard') }}" 
-                       @click="navigateToDashboard($event)"
                        class="glass-effect rounded-lg p-4 cursor-pointer flex items-center space-x-3 hover:bg-white/10 transition-all">
                         <i class="fas fa-tachometer-alt text-gray-800"></i>
                         <span class="font-semibold text-gray-800">Dashboard</span>
@@ -682,22 +681,6 @@
         </div>
     </div>
 
-    <!-- Dashboard Loading Modal -->
-    <div x-show="dashboardLoading" 
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg p-8 flex flex-col items-center max-w-sm mx-4">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-4"></div>
-            <p class="text-gray-700 font-medium text-lg">Loading Dashboard...</p>
-            <p class="text-gray-500 text-sm mt-2">Please wait while we redirect you</p>
-        </div>
-    </div>
-
     <script>
         function documentArchives() {
             return {
@@ -738,7 +721,6 @@
                         })->toArray()) !!},
                 pagination: @json($archives->toArray()),
                 loading: false,
-                dashboardLoading: false,
                 filterLoading: false,
                 filters: {
                     action: '{{ request("action", "") }}',
@@ -823,22 +805,6 @@
                         search: ''
                     };
                     this.handleFilterChange();
-                },
-                
-                navigateToDashboard(event) {
-                    event.preventDefault();
-                    this.dashboardLoading = true;
-                    
-                    // Simulate loading delay then navigate with fade
-                    setTimeout(() => {
-                        // Start fade out
-                        this.dashboardLoading = false;
-                        
-                        // Wait for fade out to complete, then navigate
-                        setTimeout(() => {
-                            window.location.href = event.target.closest('a').href;
-                        }, 200);
-                    }, 600);
                 },
                 
                 confirmDelete(id, name) {
