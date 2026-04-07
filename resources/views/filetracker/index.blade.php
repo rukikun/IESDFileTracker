@@ -417,39 +417,7 @@
             animation: highlightUpdated 2s ease-in-out;
         }
 
-        /* Ensure notification dropdown appears above everything */
-        .notification-dropdown {
-            z-index: 999999999999999 !important;
-            position: fixed !important;
-            transform: translateZ(0) !important;
-        }
-
-        /* Custom scrollbar styling for notification dropdown */
-        #notificationDropdown .overflow-y-auto::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        #notificationDropdown .overflow-y-auto::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        #notificationDropdown .overflow-y-auto::-webkit-scrollbar-thumb {
-            background-color: rgba(156, 163, 175, 0.8);
-            border-radius: 2px;
-        }
-
-        #notificationDropdown .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(156, 163, 175, 1);
-        }
-
-        .dark #notificationDropdown .overflow-y-auto::-webkit-scrollbar-thumb {
-            background-color: rgba(75, 85, 99, 0.8);
-        }
-
-        .dark #notificationDropdown .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(75, 85, 99, 1);
-        }
-
+        
         /* Custom scrollbar styling for main content area */
         .main-content::-webkit-scrollbar {
             width: 4px;
@@ -515,7 +483,7 @@
                 </div>
 
                 <!-- Right section: Theme Toggle, Notifications, and Logout -->
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-6">
                     <!-- Dark Mode Toggle -->
                     <button @click="toggleDarkMode()" 
                             class="text-white hover:text-blue-200 transition-colors p-2 rounded-lg hover:bg-blue-700"
@@ -523,11 +491,9 @@
                         <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'" class="text-xl"></i>
                     </button>
 
-                    <!-- Notifications -->
-                    @include('components.notification-dropdown')
-
+                    
                     <!-- Logout Button -->
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                    <form method="POST" action="{{ route('logout') }}" class="inline ml-6">
                         @csrf
                         <button type="submit" 
                                 class="bg-white text-blue-600 px-6 py-2.5 rounded-lg shadow-md hover:bg-blue-50 transition-all duration-200 font-semibold flex items-center space-x-2 hover:shadow-lg">
@@ -837,10 +803,19 @@
                             <span x-show="hasActiveFilters()">filtered</span> 
                             of <span x-text="filteredDocuments.length" class="font-semibold"></span> documents
                         </div>
-                        <button @click="showAddDocument = true" 
-                                class="btn-primary text-white px-6 py-3 rounded-lg font-semibold">
-                            <i class="fas fa-plus mr-2"></i>Add Document
-                        </button>
+                        <div class="flex items-center space-x-4">
+                            @if(Auth::user() && Auth::user()->isSuperAdmin())
+                                <a href="{{ route('archives.index') }}" 
+                                   @click="navigateToArchives($event)"
+                                   class="btn-primary text-white px-6 py-3 rounded-lg font-semibold">
+                                    <i class="fas fa-archive mr-2"></i>Archives
+                                </a>
+                            @endif
+                            <button @click="showAddDocument = true" 
+                                    class="btn-primary text-white px-6 py-3 rounded-lg font-semibold">
+                                <i class="fas fa-plus mr-2"></i>Add Document
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1261,6 +1236,22 @@
         </div>
     </div>
 
+    <!-- Archives Loading Modal -->
+    <div x-show="archivesLoading" 
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 flex flex-col items-center max-w-sm mx-4">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-4"></div>
+            <p class="text-gray-700 font-medium text-lg">Loading Archives...</p>
+            <p class="text-gray-500 text-sm mt-2">Please wait while we redirect you</p>
+        </div>
+    </div>
+
     <script>
         function fileTracker() {
             return {
@@ -1289,6 +1280,7 @@
                 searchLoading: false, // Loading state for search
                 searchLoadingTimer: null, // Timer for search loading delay
                 filterLoading: false, // Loading state for category/year/month filters
+                archivesLoading: false, // Loading state for archives navigation
                 totalDocumentsCount: @json($documents->count()), // Total documents count
                 filters: {
                     category_id: @json($filters['category_id'] ?? ''),
@@ -1421,6 +1413,22 @@
                 
                 get isAdminFilesSelected() {
                     return this.selectedCategory === 'admin';
+                },
+                
+                navigateToArchives(event) {
+                    event.preventDefault();
+                    this.archivesLoading = true;
+                    
+                    // Simulate loading delay then navigate with fade
+                    setTimeout(() => {
+                        // Start fade out
+                        this.archivesLoading = false;
+                        
+                        // Wait for fade out to complete, then navigate
+                        setTimeout(() => {
+                            window.location.href = event.target.closest('a').href;
+                        }, 200);
+                    }, 600);
                 },
                 
                 async addCategory() {
@@ -1893,6 +1901,9 @@
                         event.preventDefault();
                         event.stopPropagation();
                     }
+                    
+                    // Reset to first page when filters change
+                    this.currentPage = 1;
                     
                     this.filterLoading = true;
                     this.applyFilters();

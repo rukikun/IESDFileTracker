@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Archive;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -29,6 +31,18 @@ class CategoryController extends Controller
             'icon' => $request->icon ?? 'folder'
         ]);
 
+        // Log category creation to archive
+        if (Auth::check()) {
+            Archive::logAction(
+                userId: Auth::id(),
+                action: 'created',
+                documentTitle: $category->category_name,
+                documentType: 'category',
+                newData: $category->toArray(),
+                description: "Category '{$category->category_name}' created"
+            );
+        }
+
         return response()->json($category, 201);
     }
 
@@ -46,6 +60,9 @@ class CategoryController extends Controller
             'icon' => 'nullable|string|max:50'
         ]);
 
+        // Store old data before update
+        $oldData = $category->toArray();
+
         $category->update([
             'category_name' => $request->category_name,
             'description' => $request->description,
@@ -53,12 +70,42 @@ class CategoryController extends Controller
             'icon' => $request->icon ?? $category->icon
         ]);
 
+        // Log category update to archive
+        if (Auth::check()) {
+            Archive::logAction(
+                userId: Auth::id(),
+                action: 'edited',
+                documentTitle: $category->category_name,
+                documentType: 'category',
+                oldData: $oldData,
+                newData: $category->toArray(),
+                description: "Category '{$category->category_name}' updated"
+            );
+        }
+
         return response()->json($category);
     }
 
     public function destroy(Category $category)
     {
+        // Store category data before deletion
+        $categoryName = $category->category_name;
+        $oldData = $category->toArray();
+        
         $category->delete();
+        
+        // Log category deletion to archive
+        if (Auth::check()) {
+            Archive::logAction(
+                userId: Auth::id(),
+                action: 'deleted',
+                documentTitle: $categoryName,
+                documentType: 'category',
+                oldData: $oldData,
+                description: "Category '{$categoryName}' deleted"
+            );
+        }
+        
         return response()->json(null, 204);
     }
 
@@ -66,13 +113,42 @@ class CategoryController extends Controller
     {
         $category = Category::withTrashed()->findOrFail($id);
         $category->restore();
+        
+        // Log category restoration to archive
+        if (Auth::check()) {
+            Archive::logAction(
+                userId: Auth::id(),
+                action: 'edited',
+                documentTitle: $category->category_name,
+                documentType: 'category',
+                newData: $category->toArray(),
+                description: "Category '{$category->category_name}' restored"
+            );
+        }
+        
         return response()->json($category);
     }
 
     public function forceDelete($id)
     {
         $category = Category::withTrashed()->findOrFail($id);
+        $categoryName = $category->category_name;
+        $oldData = $category->toArray();
+        
         $category->forceDelete();
+        
+        // Log category permanent deletion to archive
+        if (Auth::check()) {
+            Archive::logAction(
+                userId: Auth::id(),
+                action: 'deleted',
+                documentTitle: $categoryName,
+                documentType: 'category',
+                oldData: $oldData,
+                description: "Category '{$categoryName}' permanently deleted"
+            );
+        }
+        
         return response()->json(null, 204);
     }
 

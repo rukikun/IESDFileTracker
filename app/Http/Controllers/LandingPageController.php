@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Document;
 use App\Models\Month;
-use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LandingPageController extends Controller
 {
@@ -20,7 +21,7 @@ class LandingPageController extends Controller
         \Log::info('LandingPageController::index() called');
         \Log::info('User authenticated: ' . (auth()->check() ? 'YES' : 'NO'));
         
-        // If user is authenticated, show filetracker with notifications
+        // If user is authenticated, show filetracker dashboard
         if (auth()->check()) {
             \Log::info('Processing authenticated user');
             
@@ -95,22 +96,10 @@ class LandingPageController extends Controller
                 return is_null($document->category_id);
             });
             
-            // Get notifications for authenticated users
-            $notifications = Notification::where('user_id', auth()->id())
-                ->orderBy('created_at', 'desc')
-                ->limit(10)
-                ->get();
-            
-            $unreadCount = Notification::where('user_id', auth()->id())
-                ->where('is_read', false)
-                ->count();
-            
             // DEBUG: Log what we're about to pass to view
             \Log::info('About to return view with:');
-            \Log::info('- Notifications count: ' . $notifications->count());
-            \Log::info('- Unread count: ' . $unreadCount);
             
-            // Return filetracker view with all data including notifications
+            // Return filetracker view with all data
             return view('filetracker.index', [
                 'categories' => $categories,
                 'documents' => $documents,
@@ -118,9 +107,7 @@ class LandingPageController extends Controller
                 'uncategorizedDocuments' => $uncategorizedDocuments,
                 'availableYears' => $availableYears,
                 'months' => $months,
-                'filters' => $filters,
-                'notifications' => $notifications,
-                'unreadCount' => $unreadCount
+                'filters' => $filters
             ]);
         }
         

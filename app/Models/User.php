@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -63,18 +64,26 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the notifications for the user
+     * Get the archives for the user
      */
-    public function notifications(): HasMany
+    public function archives(): HasMany
     {
-        return $this->hasMany(Notification::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(Archive::class)->orderBy('created_at', 'desc');
     }
 
     /**
-     * Get unread notifications for the user
+     * Check if user is super admin
      */
-    public function unreadNotifications(): HasMany
+    public function isSuperAdmin(): bool
     {
-        return $this->notifications()->unread();
+        return $this->role === 'super_admin';
+    }
+
+    /**
+     * Check if user can access archives
+     */
+    public function canAccessArchives(): bool
+    {
+        return $this->isSuperAdmin();
     }
 }

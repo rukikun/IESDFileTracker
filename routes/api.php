@@ -16,11 +16,18 @@ use App\Http\Controllers\DocumentController;
 |
 */
 
-// Category API Routes
-Route::apiResource('categories', CategoryController::class);
-Route::post('categories/{id}/restore', [CategoryController::class, 'restore']);
-Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete']);
-Route::get('categories/trashed', [CategoryController::class, 'trashed']);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
-// Document API Routes
-Route::apiResource('documents', DocumentController::class);
+// Protected API Routes
+Route::middleware(['web', 'auth'])->group(function () {
+    // Category API Routes
+    Route::apiResource('categories', CategoryController::class);
+    Route::post('categories/{id}/restore', [CategoryController::class, 'restore']);
+    Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete']);
+    Route::get('categories/trashed', [CategoryController::class, 'trashed']);
+
+    // Document API Routes
+    Route::apiResource('documents', DocumentController::class);
+});

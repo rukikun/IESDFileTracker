@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\Category;
-use App\Models\Notification;
+use App\Models\Archive;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -56,21 +56,18 @@ class DocumentController extends Controller
             'is_admin' => $request->is_admin ?? false
         ]);
 
-        // Create notification for document creation
+        // Log document creation to archive - IMMEDIATE
         if (Auth::check()) {
-            Notification::create([
-                'user_id' => Auth::id(),
-                'type' => 'data_edit',
-                'title' => 'Document Added',
-                'message' => "New document '{$document->document_name}' has been added to {$category->category_name}.",
-                'data' => [
-                    'document_id' => $document->id,
-                    'document_name' => $document->document_name,
-                    'category_name' => $category->category_name,
-                    'action' => 'created',
-                    'user_name' => Auth::user()->name
-                ],
-            ]);
+            Archive::logAction(
+                userId: Auth::id(),
+                action: 'created',
+                documentTitle: $document->document_name,
+                documentType: 'document',
+                newData: $document->toArray(),
+                description: "Document '{$document->document_name}' added to {$category->category_name}",
+                documentId: $document->id,
+                categoryId: $document->category_id
+            );
         }
 
         return response()->json($document->load('category', 'month'), 201);
@@ -91,6 +88,9 @@ class DocumentController extends Controller
             'document_month_id' => 'nullable|exists:months,id'
         ]);
 
+        // Store old data before update
+        $oldData = $document->toArray();
+
         if ($request->has('category_id')) {
             $category = Category::find($request->category_id);
             $document->category_name = $category->category_name;
@@ -98,22 +98,20 @@ class DocumentController extends Controller
 
         $document->update($request->all());
 
-        // Create notification for document update
+        // Log document update to archive - IMMEDIATE
         if (Auth::check()) {
             $categoryName = $document->category->category_name ?? 'Unknown';
-            Notification::create([
-                'user_id' => Auth::id(),
-                'type' => 'data_edit',
-                'title' => 'Document Updated',
-                'message' => "Document '{$document->document_name}' has been updated in {$categoryName}.",
-                'data' => [
-                    'document_id' => $document->id,
-                    'document_name' => $document->document_name,
-                    'category_name' => $categoryName,
-                    'action' => 'updated',
-                    'user_name' => Auth::user()->name
-                ],
-            ]);
+            Archive::logAction(
+                userId: Auth::id(),
+                action: 'edited',
+                documentTitle: $document->document_name,
+                documentType: 'document',
+                oldData: $oldData,
+                newData: $document->toArray(),
+                description: "Document '{$document->document_name}' updated in {$categoryName}",
+                documentId: $document->id,
+                categoryId: $document->category_id
+            );
         }
 
         return response()->json($document->load('category', 'month'));
@@ -124,22 +122,23 @@ class DocumentController extends Controller
         $documentName = $document->document_name;
         $categoryName = $document->category->category_name ?? 'Unknown';
         
+        // Store document data before deletion
+        $oldData = $document->toArray();
+        
         $document->delete();
         
-        // Create notification for document deletion
+        // Log document deletion to archive - IMMEDIATE
         if (Auth::check()) {
-            Notification::create([
-                'user_id' => Auth::id(),
-                'type' => 'data_edit',
-                'title' => 'Document Deleted',
-                'message' => "Document '{$documentName}' has been deleted from {$categoryName}.",
-                'data' => [
-                    'document_name' => $documentName,
-                    'category_name' => $categoryName,
-                    'action' => 'deleted',
-                    'user_name' => Auth::user()->name
-                ],
-            ]);
+            Archive::logAction(
+                userId: Auth::id(),
+                action: 'deleted',
+                documentTitle: $documentName,
+                documentType: 'document',
+                oldData: $oldData,
+                description: "Document '{$documentName}' deleted from {$categoryName}",
+                documentId: $document->id,
+                categoryId: $document->category_id
+            );
         }
         
         return response()->json(null, 204);
