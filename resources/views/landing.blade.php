@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>IESD File Tracker</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}?v=2">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -34,7 +34,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-8">
                     <div class="flex items-center space-x-3">
-                    <img src="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}" alt="PSA Logo" class="h-8 w-auto">
+                    <img src="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}" alt="PSA Logo" class="h-8 w-auto">
                     <div class="text-white font-bold text-xl">IESD File Tracker</div>
                 </div>
                     <div class="hidden md:flex space-x-6">
@@ -91,7 +91,7 @@
             <div class="lg:w-1/2 flex justify-center pointer-events-auto">
                 <div class="relative">
                     <div class="w-[28rem] h-[28rem] bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center">
-                        <img src="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}" alt="PSA Logo" class="w-64 h-auto opacity-80">
+                        <img src="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}" alt="PSA Logo" class="w-64 h-auto opacity-80">
                     </div>
                     <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center">
                         <svg class="w-12 h-12 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
