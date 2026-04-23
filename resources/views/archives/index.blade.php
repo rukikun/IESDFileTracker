@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Document Archives - IESD File Tracker</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}?v=2">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -349,6 +349,157 @@
         .dark .bg-white.divide-y > div {
             background-color: #1f2937 !important;
         }
+
+        /* Responsive Design Improvements */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 320px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .logo-container {
+                width: 10rem;
+                height: 10rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .sidebar {
+                width: 100%;
+                max-width: 320px;
+            }
+            
+            header h1 {
+                font-size: 1.25rem;
+                display: none;
+            }
+            
+            header .flex.items-center.space-x-4 {
+                space-x: 0.5rem;
+            }
+            
+            .logo-container {
+                width: 8rem;
+                height: 8rem;
+            }
+            
+            .main-content {
+                padding: 0.5rem;
+            }
+            
+            .glass-effect.rounded-xl.shadow-xl {
+                border-radius: 0.5rem;
+            }
+            
+            .p-6 {
+                padding: 1rem;
+            }
+            
+            .btn-primary {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header .flex.items-center.space-x-6 {
+                space-x: 0.25rem;
+            }
+            
+            .logo-container {
+                width: 6rem;
+                height: 6rem;
+            }
+            
+            .text-3xl {
+                font-size: 1rem;
+            }
+            
+            .px-6.py-4 {
+                padding: 0.5rem 0.75rem;
+            }
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 640px) {
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+                width: 0;
+                opacity: 0;
+            }
+            
+            .main-content.sidebar-collapsed {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        /* Touch-friendly adjustments */
+        @media (hover: none) and (pointer: coarse) {
+            .category-card:hover {
+                transform: none;
+            }
+            
+            .btn-primary:hover {
+                transform: none;
+            }
+            
+            button,
+            .category-card {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+
+        /* Ensure proper viewport scaling */
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        /* Prevent horizontal scroll on mobile */
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Responsive header elements */
+        @media (max-width: 1024px) {
+            header .flex.items-center.justify-between {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .flex.items-center.justify-between {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            header .flex.items-center.space-x-4 {
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            header .flex.items-center.space-x-6 {
+                justify-content: center;
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50" x-data="documentArchives()">
@@ -372,14 +523,14 @@
                     
                     <!-- Logo 1 - Philippine Statistics Authority -->
                     <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center p-1">
-                        <img src="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}" 
+                        <img src="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}" 
                              alt="PSA Logo" 
                              class="h-full w-full object-contain">
                     </div>
                     
                     <!-- Logo 2 -->
                     <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center p-2">
-                        <img src="{{ asset('images/BP_color-logo-ver1-600px.png') }}" 
+                        <img src="{{ asset('assets/images/logos/BP_color-logo-ver1-600px.png') }}" 
                              alt="BP Logo" 
                              class="h-8 w-8 object-contain">
                     </div>

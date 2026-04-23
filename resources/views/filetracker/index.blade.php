@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Documents - IESD File Tracker</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}?v=2">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -443,6 +443,235 @@
         .dark .main-content::-webkit-scrollbar-thumb:hover {
             background-color: rgba(75, 85, 99, 1);
         }
+
+        /* Responsive Design Improvements */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 320px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .logo-container {
+                width: 10rem;
+                height: 10rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .grid.grid-cols-1.md\:grid-cols-4 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .sidebar {
+                width: 100%;
+                max-width: 320px;
+            }
+            
+            header h1 {
+                font-size: 1.25rem;
+                display: none;
+            }
+            
+            header .flex.items-center.space-x-4 {
+                space-x: 0.5rem;
+            }
+            
+            .logo-container {
+                width: 8rem;
+                height: 8rem;
+            }
+            
+            .main-content {
+                padding: 0.5rem;
+            }
+            
+            .glass-effect.rounded-xl.shadow-xl {
+                border-radius: 0.5rem;
+            }
+            
+            .p-6 {
+                padding: 1rem;
+            }
+            
+            .table th {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+            }
+            
+            .table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.75rem;
+            }
+            
+            .btn-primary {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+            
+            .fixed.inset-0.modal-backdrop .bg-white.rounded-xl.shadow-2xl {
+                margin: 1rem;
+                max-width: calc(100vw - 2rem);
+            }
+        }
+
+        @media (max-width: 480px) {
+            header .flex.items-center.space-x-6 {
+                space-x: 0.25rem;
+            }
+            
+            .logo-container {
+                width: 6rem;
+                height: 6rem;
+            }
+            
+            .text-3xl {
+                font-size: 1rem;
+            }
+            
+            .px-6.py-4 {
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .table th,
+            .table td {
+                padding: 0.25rem;
+                font-size: 0.625rem;
+            }
+            
+            .truncate.max-w-xs {
+                max-width: 4rem;
+            }
+            
+            .flex.space-x-2 {
+                space-x: 0.25rem;
+            }
+            
+            .p-2 {
+                padding: 0.25rem;
+            }
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 640px) {
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+                width: 0;
+                opacity: 0;
+            }
+            
+            .main-content.sidebar-collapsed {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            /* Hide some elements on mobile to save space */
+            .mobile-hidden {
+                display: none !important;
+            }
+            
+            /* Adjust table for mobile */
+            .overflow-x-auto table {
+                min-width: 600px;
+            }
+            
+            /* Make modals full screen on very small devices */
+            @media (max-width: 480px) {
+                .fixed.inset-0.modal-backdrop .bg-white.rounded-xl.shadow-2xl {
+                    margin: 0;
+                    max-width: 100vw;
+                    height: 100vh;
+                    border-radius: 0;
+                }
+            }
+        }
+
+        /* Touch-friendly adjustments */
+        @media (hover: none) and (pointer: coarse) {
+            .category-card:hover {
+                transform: none;
+            }
+            
+            .btn-primary:hover {
+                transform: none;
+            }
+            
+            button,
+            .category-card {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+
+        /* Ensure proper viewport scaling */
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        /* Prevent horizontal scroll on mobile */
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Responsive pagination */
+        @media (max-width: 640px) {
+            .flex.items-center.space-x-2 {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            
+            .px-3.py-2 {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Responsive filters */
+        @media (max-width: 768px) {
+            .grid.grid-cols-1.md\:grid-cols-4.gap-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Responsive header elements */
+        @media (max-width: 1024px) {
+            header .flex.items-center.justify-between {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .flex.items-center.justify-between {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            header .flex.items-center.space-x-4 {
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            header .flex.items-center.space-x-6 {
+                justify-content: center;
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50" x-data="fileTracker()">
@@ -466,29 +695,30 @@
                     
                     <!-- Logo 1 - Philippine Statistics Authority -->
                     <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center p-1 logo-container">
-                        <img src="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}" 
+                        <img src="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}" 
                              alt="PSA Logo" 
                              class="h-full w-full object-contain">
                     </div>
                     
                     <!-- Logo 2 -->
                     <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center p-2">
-                        <img src="{{ asset('images/BP_color-logo-ver1-600px.png') }}" 
+                        <img src="{{ asset('assets/images/logos/BP_color-logo-ver1-600px.png') }}" 
                              alt="BP Logo" 
                              class="h-8 w-8 object-contain">
                     </div>
                     
                     <!-- Title -->
-                    <h1 class="text-white text-3xl font-bold tracking-wider ml-2">IESD FILE TRACKER</h1>
+                    <h1 class="text-white text-3xl font-bold tracking-wider ml-2 hidden sm:block lg:block">IESD FILE TRACKER</h1>
+                    <h1 class="text-white text-xl font-bold tracking-wider ml-2 block sm:hidden lg:hidden">IESD</h1>
                 </div>
 
                 <!-- Right section: Theme Toggle, Notifications, and Logout -->
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-4 sm:space-x-6">
                     <!-- Dark Mode Toggle -->
                     <button @click="toggleDarkMode()" 
                             class="text-white hover:text-blue-200 transition-colors p-2 rounded-lg hover:bg-blue-700"
                             title="Toggle Dark Mode">
-                        <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'" class="text-xl"></i>
+                        <i :class="darkMode ? 'fas fa-sun' : 'fas fa-moon'" class="text-lg sm:text-xl"></i>
                     </button>
 
                     
@@ -496,9 +726,9 @@
                     <form method="POST" action="{{ route('logout') }}" class="inline ml-6">
                         @csrf
                         <button type="submit" 
-                                class="bg-white text-blue-600 px-6 py-2.5 rounded-lg shadow-md hover:bg-blue-50 transition-all duration-200 font-semibold flex items-center space-x-2 hover:shadow-lg">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
+                                class="bg-white text-blue-600 px-3 sm:px-6 py-2 sm:py-2.5 rounded-lg shadow-md hover:bg-blue-50 transition-all duration-200 font-semibold flex items-center space-x-1 sm:space-x-2 hover:shadow-lg text-xs sm:text-sm">
+                            <i class="fas fa-sign-out-alt text-xs sm:text-sm"></i>
+                            <span class="hidden sm:inline">Logout</span>
                         </button>
                     </form>
                 </div>
@@ -508,9 +738,9 @@
 
     <div class="flex h-screen" :class="darkMode ? 'bg-gray-900' : 'bg-gray-100'" style="height: calc(100vh - 80px);">
         <!-- Enhanced Sidebar -->
-        <aside class="sidebar w-80 sidebar-gradient shadow-2xl z-40"
+        <aside class="sidebar w-80 sidebar-gradient shadow-2xl z-40 fixed left-0 top-0 h-full lg:relative lg:top-auto lg:left-auto lg:h-auto"
                :class="{ 'collapsed': !sidebarOpen }"
-               style="overflow: auto; height: 100%;">
+               style="overflow: auto; height: 100%; z-index: 50;">
             <div class="p-6 text-white">
                 <!-- Header -->
                 <div class="mb-8">
@@ -633,6 +863,18 @@
                             </div>
         </aside>
 
+        <!-- Mobile Sidebar Overlay -->
+        <div x-show="sidebarOpen && window.innerWidth < 1024" 
+             @click="sidebarOpen = false"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden">
+        </div>
+
         <!-- Loading Overlay -->
         <div x-show="loading || searchLoading || filterLoading" 
              x-transition:enter="transition ease-out duration-200"
@@ -652,7 +894,7 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col p-6 main-content overflow-y-auto" :class="{ 'sidebar-collapsed': !sidebarOpen, 'bg-gray-100': !darkMode, 'bg-gray-900': darkMode }">
+        <main class="flex-1 flex flex-col p-3 sm:p-6 main-content overflow-y-auto" :class="{ 'sidebar-collapsed': !sidebarOpen, 'bg-gray-100': !darkMode, 'bg-gray-900': darkMode }">
             <div class="glass-effect rounded-xl shadow-xl flex-1 flex flex-col">
                 <!-- Filters Section -->
                 <div class="p-6 border-b border-gray-200">
@@ -667,7 +909,7 @@
                         </button>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <!-- Category Filter -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
@@ -803,16 +1045,20 @@
                             <span x-show="hasActiveFilters()">filtered</span> 
                             of <span x-text="filteredDocuments.length" class="font-semibold"></span> documents
                         </div>
-                        <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-2 sm:space-x-4 flex-wrap gap-2">
                             @if(Auth::user() && Auth::user()->isSuperAdmin())
                                 <a href="{{ route('archives.index') }}" 
-                                   class="btn-primary text-white px-6 py-3 rounded-lg font-semibold">
-                                    <i class="fas fa-archive mr-2"></i>Archives
+                                   class="btn-primary text-white px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm">
+                                    <i class="fas fa-archive mr-1 sm:mr-2 text-xs sm:text-sm"></i>
+                                    <span class="hidden sm:inline">Archives</span>
+                                    <span class="sm:hidden">Arch</span>
                                 </a>
                             @endif
                             <button @click="showAddDocument = true" 
-                                    class="btn-primary text-white px-6 py-3 rounded-lg font-semibold">
-                                <i class="fas fa-plus mr-2"></i>Add Document
+                                    class="btn-primary text-white px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-xs sm:text-sm">
+                                <i class="fas fa-plus mr-1 sm:mr-2 text-xs sm:text-sm"></i>
+                                <span class="hidden sm:inline">Add Document</span>
+                                <span class="sm:hidden">Add</span>
                             </button>
                         </div>
                     </div>
@@ -831,18 +1077,18 @@
                     </div>
                     
                     <div class="overflow-x-auto transition-all duration-300 ease-in-out">
-                        <table class="w-full">
+                        <table class="w-full min-w-[600px]">
                             <thead>
                                 <tr class="border-b border-gray-200 bg-gray-50">
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-700 text-xs sm:text-sm">
                                         <input type="checkbox" @change="toggleSelectAll" class="mr-2">
                                         Name
                                     </th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Category</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Year</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Link</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Actions</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-gray-700">Month</th>
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-700 text-xs sm:text-sm">Category</th>
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-700 text-xs sm:text-sm">Year</th>
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-700 text-xs sm:text-sm">Link</th>
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-700 text-xs sm:text-sm">Actions</th>
+                                    <th class="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-700 text-xs sm:text-sm">Month</th>
                                 </tr>
                             </thead>
                             <tbody class="transition-opacity duration-300 ease-in-out"
@@ -851,33 +1097,33 @@
                                     <tr class="border-b border-gray-100 hover:bg-gray-50 transition-all duration-300"
                                         :class="{ 'new-document-highlight': newDocumentId === document.id }"
                                         :data-document-id="document.id">
-                                        <td class="py-4 px-4">
+                                        <td class="py-2 sm:py-4 px-2 sm:px-4">
                                             <div class="flex items-center">
                                                 <input type="checkbox" :value="document.id" x-model="selectedDocuments" class="mr-3 w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500">
                                                 <div>
-                                                    <div class="font-semibold text-gray-800" x-text="document.document_name"></div>
-                                                    <div class="text-xs text-gray-500" x-text="formatDate(document.created_at)"></div>
+                                                    <div class="font-semibold text-gray-800 text-xs sm:text-sm" x-text="document.document_name"></div>
+                                                    <div class="text-xs text-gray-500 hidden sm:block" x-text="formatDate(document.created_at)"></div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="py-4 px-4">
-                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+                                        <td class="py-2 sm:py-4 px-2 sm:px-4">
+                                            <span class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium"
                                                   :style="`background-color: ${getCategoryColor(document.category_name)}20; color: ${getCategoryColor(document.category_name)}`"
                                                   x-text="document.category_name"></span>
                                         </td>
-                                        <td class="py-4 px-4 text-gray-600">
+                                        <td class="py-2 sm:py-4 px-2 sm:px-4 text-gray-600">
                                             <span x-text="document.document_year || 'N/A'"></span>
                                         </td>
-                                        <td class="py-4 px-4">
+                                        <td class="py-2 sm:py-4 px-2 sm:px-4">
                                             <a :href="document.url" 
                                                target="_blank" 
                                                class="text-indigo-600 hover:text-indigo-800 underline flex items-center">
                                                 <i class="fas fa-external-link-alt mr-1 text-xs"></i>
-                                                <span class="truncate max-w-xs" x-text="document.url"></span>
+                                                <span class="truncate max-w-[100px] sm:max-w-xs" x-text="document.url"></span>
                                             </a>
                                         </td>
-                                        <td class="py-4 px-4">
-                                            <div class="flex space-x-2">
+                                        <td class="py-2 sm:py-4 px-2 sm:px-4">
+                                            <div class="flex space-x-1 sm:space-x-2">
                                                 <button @click="editDocument(document)" 
                                                         class="text-blue-600 hover:text-blue-800 p-2 hover:bg-blue-50 rounded-lg transition-colors"
                                                         title="Edit">
@@ -909,16 +1155,17 @@
                                 <button @click="previousPage()" 
                                         :disabled="currentPage === 1"
                                         :class="{ 'opacity-50 cursor-not-allowed': currentPage === 1, 'hover:bg-gray-100 active:scale-95': currentPage > 1 }"
-                                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md transition-all duration-200 transform">
-                                    <i class="fas fa-chevron-left mr-1"></i>
-                                    Previous
+                                        class="px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md transition-all duration-200 transform">
+                                    <i class="fas fa-chevron-left mr-0 sm:mr-1 text-xs sm:text-sm"></i>
+                                    <span class="hidden sm:inline">Previous</span>
+                                    <span class="sm:hidden">Prev</span>
                                 </button>
                                 
                                 <!-- Page Numbers -->
                                 <template x-for="page in Math.min(totalPages, 5)" :key="page">
                                     <button @click="goToPage(page)" 
                                             :class="{ 'bg-indigo-600 text-white border-indigo-600 active:scale-95': page === currentPage, 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 active:scale-95': page !== currentPage }"
-                                            class="px-3 py-2 text-sm font-medium border rounded-md transition-all duration-200 transform"
+                                            class="px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium border rounded-md transition-all duration-200 transform"
                                             x-text="page"></button>
                                 </template>
                                 
@@ -926,9 +1173,10 @@
                                 <button @click="nextPage()" 
                                         :disabled="currentPage === totalPages"
                                         :class="{ 'opacity-50 cursor-not-allowed': currentPage === totalPages, 'hover:bg-gray-100 active:scale-95': currentPage < totalPages }"
-                                        class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md transition-all duration-200 transform">
-                                    Next
-                                    <i class="fas fa-chevron-right ml-1"></i>
+                                        class="px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md transition-all duration-200 transform">
+                                    <span class="hidden sm:inline">Next</span>
+                                    <span class="sm:hidden">Next</span>
+                                    <i class="fas fa-chevron-right ml-0 sm:ml-1 text-xs sm:text-sm"></i>
                                 </button>
                             </div>
                         </div>
@@ -953,7 +1201,7 @@
          x-transition:leave-start="opacity-100 transform translate-y-0 scale-100"
          x-transition:leave-end="opacity-0 transform -translate-y-4 scale-95"
          class="fixed inset-0 modal-backdrop flex items-center justify-center z-50" x-cloak>
-        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4 relative">
+        <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-6 w-full max-w-md mx-2 sm:mx-4 relative">
             <!-- Loading Overlay -->
             <div x-show="addDocumentLoading" 
                  x-transition:enter="transition ease-out duration-200"
@@ -1023,12 +1271,14 @@
             </div>
             <div class="flex justify-end space-x-3 mt-6">
                 <button @click="showAddDocument = false; resetNewDocument()" 
-                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors cancel-button-text">
+                        class="px-3 sm:px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors cancel-button-text text-xs sm:text-sm">
                     Cancel
                 </button>
                 <button @click="addDocument" 
-                        class="px-4 py-2 btn-primary text-white rounded-lg">
-                    <i class="fas fa-plus mr-2"></i>Add Document
+                        class="px-3 sm:px-4 py-2 btn-primary text-white rounded-lg text-xs sm:text-sm">
+                    <i class="fas fa-plus mr-1 sm:mr-2 text-xs sm:text-sm"></i>
+                    <span class="hidden sm:inline">Add Document</span>
+                    <span class="sm:hidden">Add</span>
                 </button>
             </div>
         </div>
@@ -1061,7 +1311,7 @@
                               rows="2"
                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
                 </div>
-                <div class="flex space-x-2">
+                <div class="flex space-x-1 sm:space-x-2">
                     <div class="flex-1">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
                         <input type="color" 
@@ -1070,14 +1320,16 @@
                     </div>
                 </div>
             </div>
-            <div class="flex justify-end space-x-3 mt-6">
+            <div class="flex justify-end space-x-2 sm:space-x-3 mt-6">
                 <button @click="showEditCategory = false" 
-                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors cancel-button-text">
+                        class="px-3 sm:px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors cancel-button-text text-xs sm:text-sm">
                     Cancel
                 </button>
                 <button @click="updateCategory" 
-                        class="px-4 py-2 btn-primary text-white rounded-lg">
-                    <i class="fas fa-save mr-2"></i>Save Changes
+                        class="px-3 sm:px-4 py-2 btn-primary text-white rounded-lg text-xs sm:text-sm">
+                    <i class="fas fa-save mr-1 sm:mr-2 text-xs sm:text-sm"></i>
+                    <span class="hidden sm:inline">Save Changes</span>
+                    <span class="sm:hidden">Save</span>
                 </button>
             </div>
         </div>
@@ -1104,14 +1356,14 @@
                     <br>
                     This will also delete all documents in this category.
                 </p>
-                <div class="flex justify-center space-x-3">
+                <div class="flex justify-center space-x-2 sm:space-x-3">
                     <button @click="cancelDelete()" 
-                            class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium cancel-button-text">
+                            class="px-4 sm:px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium cancel-button-text text-xs sm:text-sm">
                         Cancel
                     </button>
                     <button @click="deleteCategoryConfirmed()" 
-                            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
-                        <i class="fas fa-trash mr-2"></i>Delete
+                            class="px-4 sm:px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium text-xs sm:text-sm">
+                        <i class="fas fa-trash mr-1 sm:mr-2 text-xs sm:text-sm"></i>Delete
                     </button>
                 </div>
             </div>
@@ -1127,7 +1379,7 @@
          x-transition:leave-start="opacity-100 transform translate-y-0 scale-100"
          x-transition:leave-end="opacity-0 transform -translate-y-4 scale-95"
          class="fixed inset-0 modal-backdrop flex items-center justify-center z-50" x-cloak>
-        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
+        <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-6 w-full max-w-md mx-2 sm:mx-4">
             <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-edit mr-3 text-indigo-600"></i>
                 Edit Document
@@ -1179,22 +1431,23 @@
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
             </div>
-            <div class="flex justify-end space-x-3 mt-6">
+            <div class="flex justify-end space-x-2 sm:space-x-3 mt-6">
                 <button @click="showEditDocument = false" 
-                        class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors cancel-button-text">
+                        class="px-3 sm:px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors cancel-button-text text-xs sm:text-sm">
                     Cancel
                 </button>
                 <button @click="updateDocument" 
                         :disabled="editDocumentLoading"
                         :class="{ 'opacity-50 cursor-not-allowed': editDocumentLoading }"
-                        class="px-4 py-2 btn-primary text-white rounded-lg">
+                        class="px-3 sm:px-4 py-2 btn-primary text-white rounded-lg text-xs sm:text-sm">
                     <template x-if="editDocumentLoading">
-                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                        <i class="fas fa-spinner fa-spin mr-1 sm:mr-2 text-xs sm:text-sm"></i>
                     </template>
                     <template x-if="!editDocumentLoading">
-                        <i class="fas fa-save mr-2"></i>
+                        <i class="fas fa-save mr-1 sm:mr-2 text-xs sm:text-sm"></i>
                     </template>
-                    <span x-text="editDocumentLoading ? 'Saving...' : 'Save Changes'"></span>
+                    <span x-text="editDocumentLoading ? 'Saving...' : 'Save Changes'" class="hidden sm:inline"></span>
+                    <span x-text="editDocumentLoading ? '...' : 'Save'" class="sm:hidden"></span>
                 </button>
             </div>
         </div>
@@ -1221,14 +1474,14 @@
                     <br>
                     This action cannot be undone.
                 </p>
-                <div class="flex justify-center space-x-3">
+                <div class="flex justify-center space-x-2 sm:space-x-3">
                     <button @click="cancelDeleteDocument()" 
-                            class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium cancel-button-text">
+                            class="px-4 sm:px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium cancel-button-text text-xs sm:text-sm">
                         Cancel
                     </button>
                     <button @click="deleteDocumentConfirmed()" 
-                            class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
-                        <i class="fas fa-trash mr-2"></i>Delete
+                            class="px-4 sm:px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium text-xs sm:text-sm">
+                        <i class="fas fa-trash mr-1 sm:mr-2 text-xs sm:text-sm"></i>Delete
                     </button>
                 </div>
             </div>
@@ -1255,7 +1508,7 @@
                 activeDropdown: null,
                 categoryToDelete: null,
                 documentToDelete: null,
-                sidebarOpen: true,
+                sidebarOpen: window.innerWidth >= 1024, // Auto-close sidebar on mobile
                 darkMode: localStorage.getItem('darkMode') === 'true', // Load from localStorage
                 loading: false, // Loading state for filters
                 addDocumentLoading: false, // Loading state for add document
@@ -1856,6 +2109,22 @@
                 
                 toggleSidebar() {
                     this.sidebarOpen = !this.sidebarOpen;
+                    // On mobile, close sidebar when clicking outside
+                    if (window.innerWidth < 1024 && this.sidebarOpen) {
+                        setTimeout(() => {
+                            document.addEventListener('click', this.handleMobileSidebarClick);
+                        }, 100);
+                    } else {
+                        document.removeEventListener('click', this.handleMobileSidebarClick);
+                    }
+                },
+                
+                handleMobileSidebarClick(event) {
+                    // Close sidebar if clicking outside on mobile
+                    if (window.innerWidth < 1024 && !event.target.closest('.sidebar') && !event.target.closest('button')) {
+                        this.sidebarOpen = false;
+                        document.removeEventListener('click', this.handleMobileSidebarClick);
+                    }
                 },
                 
                 // Filter methods
@@ -2092,6 +2361,22 @@
                         document.body.classList.add('dark');
                     } else {
                         document.body.classList.remove('dark');
+                    }
+                    
+                    // Handle window resize for responsive sidebar
+                    window.addEventListener('resize', () => {
+                        if (window.innerWidth >= 1024) {
+                            // On desktop, always show sidebar
+                            this.sidebarOpen = true;
+                        } else {
+                            // On mobile, close sidebar
+                            this.sidebarOpen = false;
+                        }
+                    });
+                    
+                    // Initialize sidebar state based on screen size
+                    if (window.innerWidth < 1024) {
+                        this.sidebarOpen = false;
                     }
                 }
             }

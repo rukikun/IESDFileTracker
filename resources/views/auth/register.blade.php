@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Register - IESD File Tracker</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}?v=2">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}?v=2">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -34,7 +34,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-8">
                     <div class="flex items-center space-x-3">
-                        <img src="{{ asset('images/Philippine-Statistics-Authority-PSA-logo.png') }}" alt="PSA Logo" class="h-8 w-auto">
+                        <img src="{{ asset('assets/images/logos/Philippine-Statistics-Authority-PSA-logo.png') }}" alt="PSA Logo" class="h-8 w-auto">
                         <div class="text-white font-bold text-xl">IESD File Tracker</div>
                     </div>
                     <div class="hidden md:flex space-x-6">
